@@ -1,0 +1,95 @@
+body{
+    background-color: black;
+    color:white;
+    font: 11px sans-serif;
+    overflow:hidden;
+}
+#title{
+    /* display:inline-block; */
+    /* width:auto; */
+    padding-bottom:20px;
+    text-align: center;
+}
+#param-holder{
+    width:100%;
+    display:inline-block;
+    padding:0 0 40px 40px ;
+}
+#graph-holder{
+    display:inline-block;
+    width:100%;
+}
+.param-outer{
+    width:auto;
+    display:inline-block;
+    padding-right:40px;
+}
+.param-title{
+    width:auto;
+    display:inline-block;
+    padding-right:30px;
+    /* vertical-align: top; */
+    text-align:center;
+}
+.param-title h2{
+    margin:0;
+    line-height:1.5em;
+}
+.param-slider-outer{
+    width:200px;
+    display:inline-block;
+    margin-top:3em;
+}
+.param-slider{
+    background-color:rgba(200,150,0,1);
+}
+.noUi-pips-horizontal{
+    padding-top:5px;
+}
+.noUi-horizontal .noUi-tooltip{
+    font-size:1.5em;
+    background:none;
+    color:white;
+    border:none;
+}
+.noUi-horizontal .noUi-tooltip::after{
+    content:'';
+    position: absolute;
+    left: 50%;
+    margin-left:-10px;
+    bottom: -3px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid white;
+    clear: both;
+}
+.noUi-value-large{
+    font-size:1.5em;
+    color:white;
+}
+.noUi-marker-horizontal.noUi-marker-large{
+    height:8px;
+    background-color:white;
+}
+.axis text{
+    fill:white;
+    font-size:2em;
+}
+.axis path{
+    stroke:white;
+}
+.axis .tick line{
+    stroke:white;
+    opacity:0.2;
+}
+.line{
+    stroke-width:2;
+}
+.line.data{
+    stroke:rgba(0,150,200,1)
+}
+.line.sim{
+    stroke:rgba(200,150,0,1)
+}

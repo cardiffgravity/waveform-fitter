@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+	<title>Waveform Fitter</title>
+	<!-- <script type="text/javascript" src="https://gwcat.cardiffgravity.org/js/gwcat.js"></script>
+    <script type="text/javascript" src="js/lib/stuquery.js"></script> -->
+    <!-- <script type="text/javascript" src="gwcat/js/gwcat.js"></script> -->
+	<script type="text/javascript" src="js/lib/nouislider.min.js"></script>
+    <script type="text/javascript" src="js/lib/d3.v4.min.js"></script>
+    <script type="text/javascript" src="js/wavedata.js"></script>
+    <script type="text/javascript" src="js/wavefit.js"></script>
+    <link rel="icon" type="image/vnd.microsoft.icon" href="img/favicon-32x32.png" />
+	<link rel="stylesheet" href="css/lib/nouislider.min.css">
+	<link rel="stylesheet" href="css/gwfitter.css">
+	
+    <link rel="icon" type="image/vnd.microsoft.icon" href="http://chrisnorth.github.io/plotgw/img/favicon-32x32.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-130299724-5"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-130299724-5');
+    </script>
+</head>
+<body>
+    <div id='title'><h1>Waveform Fitter</h1></div>
+    <div id='param-holder'></div>
+    <div id='fitter-holder'>
+        <div id='graph-holder'></div>
+    </div>
+    <script type='text/javascript'>
+        wf=new WaveFitter({'paramholder':'param-holder','graphholder':'graph-holder'});
+    </script>
+</body>
+</html>
