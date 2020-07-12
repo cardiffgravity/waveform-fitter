@@ -152,7 +152,7 @@ WaveFitter.prototype.setScales = function(){
     
     // this.scales.svgWidth=800;
     // this.scales.svgHeight=400;
-    this.scales.svgMargin={'left':80,'right':40,'top':10,'bottom':80}
+    this.scales.svgMargin={'left':80,'right':10,'top':10,'bottom':80}
     this.scales.graphWidth=this.scales.svgWidth-this.scales.svgMargin.left-this.scales.svgMargin.right;
     this.scales.graphHeight=this.scales.svgHeight-this.scales.svgMargin.top-this.scales.svgMargin.bottom;
     
@@ -177,6 +177,11 @@ WaveFitter.prototype.setScales = function(){
 WaveFitter.prototype.initGraph = function(){
     var _wf=this;
     _wf.setScales();
+    d3.select('body').style('width',this.scales.svgWidth);
+    // d3.select('#about').style('width',this.scales.svgWidth);
+    d3.select('#about-button').on('click',function(){showAbout();});
+    d3.select('#about-close').on('click',function(){hideAbout();});
+    
     var hid=d3.select('#'+this.holders.graph);
     hid.selectAll('*').remove();
     _wf.svg=hid.append('svg')
@@ -245,7 +250,6 @@ WaveFitter.prototype.drawData = function(){
         .attr('class','line data')
         .attr('id','line-data')
         .attr('d',_wf.lineFn)
-        .attr('stroke','red')
         .attr('stroke-width',2)
         .attr('fill','none')
     
@@ -256,7 +260,6 @@ WaveFitter.prototype.drawData = function(){
         .attr('class','line sim')
         .attr('id','line-sim')
         .attr('d',_wf.lineFn)
-        .attr('stroke','blue')
         .attr('stroke-width',2)
         .attr('fill','none')
 }
@@ -377,4 +380,21 @@ WaveFitter.prototype.addSliders = function(){
     d3.select(dist_slider).selectAll('.noUi-value').on('click',function(){
         dist_slider.noUiSlider.set(Number(this.getAttribute('data-value')))
     });
+}
+
+function showAbout(){
+    console.log('showing About');
+    d3.select('#about')
+        .classed('on',true)
+        .transition()
+        .duration(500)
+        .style('height','50%')
+}
+function hideAbout(){
+    console.log('hiding About');
+    d3.select('#about')
+        .classed('on',false)
+        .transition()
+        .duration(500)
+        .style('height',0)
 }

@@ -3,6 +3,12 @@ body{
     color:white;
     font: 11px sans-serif;
     overflow:hidden;
+    margin-left:auto;
+    margin-right:auto;
+    position:relative;
+}
+a{
+    color:yellow;
 }
 #title{
     /* display:inline-block; */
@@ -12,8 +18,41 @@ body{
 }
 #param-holder{
     width:100%;
+    position:relative;
     display:inline-block;
     padding:0 0 40px 40px ;
+}
+#about-button, #about-close{
+    /* position:absolute; */
+    right:0;
+    border:1px solid white;
+    padding:5px;
+    cursor:pointer;
+    float:right;
+}
+#about-button{
+    font-size:2em;
+    margin-right:50px;
+    margin-top:10px;
+}
+#about-close{
+    margin-right:10px;
+    margin-top:10px;
+    font-size:1.33em;
+}
+#about{
+    position:absolute;
+    width:auto;
+    height:0;
+    /* max-height:0; */
+    overflow: hidden;
+    background-color: #333;
+    /* opacity:75%; */
+    z-index:100;
+    font-size:1.5em;
+    line-height:1.5em;
+    padding:0 0 0 50px;
+    overflow:auto;
 }
 #graph-holder{
     display:inline-block;
@@ -42,6 +81,9 @@ body{
 }
 .param-slider{
     background-color:rgba(200,150,0,1);
+}
+.noUi-base, .noUi-handle, .noUi-value{
+cursor:pointer;
 }
 .noUi-pips-horizontal{
     padding-top:5px;
@@ -93,3 +135,14 @@ body{
 .line.sim{
     stroke:rgba(200,150,0,1)
 }
+.leg-text{
+    dominant-baseline:middle;
+    font-size:20px;
+}
+.leg-text.data{
+    fill:rgba(0,150,200,1);
+}
+.leg-text.sim{
+    fill:rgba(200,150,0,1);
+}
+

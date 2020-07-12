@@ -25,7 +25,17 @@
 </head>
 <body>
     <div id='title'><h1>Waveform Fitter</h1></div>
-    <div id='param-holder'></div>
+    <div id='about'>
+        <div id='about-close'>Close</div>
+        <h3>About</h3>
+        <p>This web-app allows you to match simulation of gravitational wave data to real data originating from the merger of two black holes.</p>
+        <p>Use the sliders to adjust the basic parameters of the simulation to match the data. The parameters are:</p>
+        <ul><li> The total mass of the two black holes, measured in M<sub>☉</sub> (Solar mass; the mass of the Sun)</li>
+            <li>The distance of the source from Earth in Mpc (Megaparsec; 3.26 million light years).</p>
+        <p>Data is for GW150914 (from the LIGO-Hanford detector). Simulation assumes equal-mass.</p>
+        <p>Written and maintained by Chris North (Cardiff University) for the LIGO-Virgo Collaboration. Simulation credit: Mark Hannam (Cardiff University). <a href="https://github.com/cardiffgravity/waveform-fitter">Source code</a></p>
+    </div>
+    <div id='param-holder'><div id='about-button'>About</div></div>
     <div id='fitter-holder'>
         <div id='graph-holder'></div>
     </div>
