@@ -232,6 +232,7 @@ WaveFitter.prototype.initGraph = function(){
         .attr('clip-path','url(#clip)');
     
     _wf.drawData();
+    _wf.addLegend();
 }
 
 WaveFitter.prototype.drawData = function(){
@@ -258,6 +259,36 @@ WaveFitter.prototype.drawData = function(){
         .attr('stroke','blue')
         .attr('stroke-width',2)
         .attr('fill','none')
+}
+WaveFitter.prototype.addLegend = function(){
+    var legg=this.svg.append('g')
+        .attr('class','legend')
+        .attr("transform", "translate("+(_wf.scales.svgMargin.left+_wf.scales.svgWidth*0.05)+"," +
+            (_wf.scales.svgMargin.top+_wf.scales.svgHeight*0.05) + ")")
+    legg.append('line')
+        .attr('class','line data')
+        .attr('x1',0)
+        .attr('y1',0)
+        .attr('x2',_wf.scales.svgWidth*0.05)
+        .attr('y2',0)
+    legg.append('text')
+        .attr('class','leg-text data')
+        .attr('x',_wf.scales.svgWidth*0.07)
+        .attr('y',0)
+        .text('Data')
+    
+    legg.append('line')
+        .attr('class','line sim')
+        .attr('x1',0)
+        .attr('y1',30)
+        .attr('x2',_wf.scales.svgWidth*0.05)
+        .attr('y2',30)
+    legg.append('text')
+        .attr('class','leg-text sim')
+        .attr('x',_wf.scales.svgWidth*0.07)
+        .attr('y',30)
+        .text('Simulation')
+    
 }
 WaveFitter.prototype.updatePlot = function(dur=0){
     _wf=this;
