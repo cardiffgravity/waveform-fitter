@@ -136,22 +136,23 @@ WaveFitter.prototype.initData = function(){
 
 WaveFitter.prototype.setScales = function(){
     this.scales={}
-    this.scales.winFullWidth=window.outerWidth-50;
-    this.scales.winFullHeight=window.outerHeight-document.getElementById('title').clientHeight-
-    document.getElementById(this.holders.param).clientHeight-100;
-    this.scales.winAspect = this.scales.winFullWidth/this.scales.winFullHeight;
-    
-    if (this.scales.winAspect>2){
-        this.scales.svgHeight=this.scales.winFullHeight;
-        this.scales.svgWidth=this.scales.svgHeight*2;
-        
-    }else{
-        this.scales.svgWidth=this.scales.winFullWidth;
-        this.scales.svgHeight=this.scales.svgWidth*0.5;
-    }
-    
-    this.scales.svgWidth=800;
-    this.scales.svgHeight=400;
+    // this.scales.winFullWidth=window.outerWidth-50;
+    // this.scales.winFullHeight=window.outerHeight-document.getElementById('title').clientHeight-
+    // document.getElementById(this.holders.param).clientHeight-100;
+    // this.scales.winAspect = this.scales.winFullWidth/this.scales.winFullHeight;
+    // 
+    // if (this.scales.winAspect>2){
+    //     this.scales.svgHeight=this.scales.winFullHeight;
+    //     this.scales.svgWidth=this.scales.svgHeight*2;
+    // 
+    // }else{
+    //     this.scales.svgWidth=this.scales.winFullWidth;
+    //     this.scales.svgHeight=this.scales.svgWidth*0.5;
+    // }
+    // 
+    this.scales.svgWidth=Math.floor(0.8*window.outerWidth-50);
+    this.scales.svgHeight=Math.floor(this.scales.svgWidth/2);
+    d3.select('#about').append('p').html(window.outerWidth+' x '+window.outerHeight+'=> '+this.scales.svgWidth+' x '+this.scales.svgHeight);
     this.scales.svgMargin={'left':80,'right':10,'top':10,'bottom':80}
     this.scales.graphWidth=this.scales.svgWidth-this.scales.svgMargin.left-this.scales.svgMargin.right;
     this.scales.graphHeight=this.scales.svgHeight-this.scales.svgMargin.top-this.scales.svgMargin.bottom;
