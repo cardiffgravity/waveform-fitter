@@ -136,8 +136,8 @@ WaveFitter.prototype.initData = function(){
 
 WaveFitter.prototype.setScales = function(){
     this.scales={}
-    this.scales.winFullWidth=window.innerWidth-50;
-    this.scales.winFullHeight=window.innerHeight-document.getElementById('title').clientHeight-
+    this.scales.winFullWidth=window.outerWidth-50;
+    this.scales.winFullHeight=window.outerHeight-document.getElementById('title').clientHeight-
     document.getElementById(this.holders.param).clientHeight-100;
     this.scales.winAspect = this.scales.winFullWidth/this.scales.winFullHeight;
     
