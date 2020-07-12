@@ -150,8 +150,8 @@ WaveFitter.prototype.setScales = function(){
         this.scales.svgHeight=this.scales.svgWidth*0.5;
     }
     
-    // this.scales.svgWidth=800;
-    // this.scales.svgHeight=400;
+    this.scales.svgWidth=800;
+    this.scales.svgHeight=400;
     this.scales.svgMargin={'left':80,'right':10,'top':10,'bottom':80}
     this.scales.graphWidth=this.scales.svgWidth-this.scales.svgMargin.left-this.scales.svgMargin.right;
     this.scales.graphHeight=this.scales.svgHeight-this.scales.svgMargin.top-this.scales.svgMargin.bottom;
@@ -388,7 +388,7 @@ function showAbout(){
         .classed('on',true)
         .transition()
         .duration(500)
-        .style('height','50%')
+        .style('height','75%')
 }
 function hideAbout(){
     console.log('hiding About');
