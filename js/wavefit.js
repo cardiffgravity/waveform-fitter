@@ -136,6 +136,7 @@ WaveFitter.prototype.initData = function(){
 
 WaveFitter.prototype.setScales = function(){
     this.scales={}
+    // if (window.outerWidth)
     // this.scales.winFullWidth=window.outerWidth-50;
     // this.scales.winFullHeight=window.outerHeight-document.getElementById('title').clientHeight-
     // document.getElementById(this.holders.param).clientHeight-100;
@@ -149,8 +150,8 @@ WaveFitter.prototype.setScales = function(){
     //     this.scales.svgWidth=this.scales.winFullWidth;
     //     this.scales.svgHeight=this.scales.svgWidth*0.5;
     // }
-    // 
-    this.scales.svgWidth=Math.floor(0.8*window.outerWidth-50);
+    
+    this.scales.svgWidth=Math.floor(parseFloat(d3.select('body').style('width')));
     this.scales.svgHeight=Math.floor(this.scales.svgWidth/2);
     d3.select('#about').append('p').html(window.outerWidth+' x '+window.outerHeight+'=> '+this.scales.svgWidth+' x '+this.scales.svgHeight);
     this.scales.svgMargin={'left':80,'right':10,'top':10,'bottom':80}
@@ -178,7 +179,7 @@ WaveFitter.prototype.setScales = function(){
 WaveFitter.prototype.initGraph = function(){
     var _wf=this;
     _wf.setScales();
-    d3.select('body').style('width',this.scales.svgWidth);
+    // d3.select('body').style('width',this.scales.svgWidth);
     // d3.select('#about').style('width',this.scales.svgWidth);
     d3.select('#about-button').on('click',function(){showAbout();});
     d3.select('#about-close').on('click',function(){hideAbout();});
