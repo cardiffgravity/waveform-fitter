@@ -54,6 +54,9 @@ a{
     padding:0 0 0 50px;
     overflow:auto;
 }
+#about p, #about ul{
+    margin-right:50px;
+}
 #graph-holder{
     display:inline-block;
     width:100%;
