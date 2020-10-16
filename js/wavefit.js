@@ -108,19 +108,167 @@ class ScaleableWaveData extends WaveData{
 // ScaleableWaveData.prototype.scale=function(
 function WaveFitter(params){
     var _wf=this;
+    this.getUrlVars();
+    this.debug=(this.urlVars.debug) ? this.urlVars.debug : false;
+    
     this.initData();
     this.holders={
         'param':((params.paramholder)?params.paramholder:'param-holder'),
         'graph':((params.graphholder)?params.graphholder:'graph-holder')
     }
     this.addSliders();
-    this.initGraph();
+    // this.initGraph();
+    this.defaults={
+        'lang':'en'
+    }
+    this.langs={
+        'en':'English (en)',
+        'cy':'Cymraeg (cy)'
+    }
+    this.toLoad=2;
+    this.loaded=0;
+    this.lang= (this.urlVars.lang) ? this.urlVars.lang : this.defaults.lang;
+    this.loadLangDefault();
+    this.loadLang(this.lang);
     window.addEventListener("resize",function(){
         _wf.initGraph();
     });
     return this;
 }
-
+WaveFitter.prototype.getUrlVars = function(){
+    var vars = {},hash;
+    var url = window.location.href;
+    if (window.location.href.indexOf('?')!=-1){
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        url = window.location.href.slice(0,window.location.href.indexOf('?'));
+        for(var i = 0; i < hashes.length; i++)
+        {
+            hash = hashes[i].split('=');
+            // vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+    }
+    // console.log("input:",vars);
+    this.urlVars = vars;
+    this.url = url;
+}
+WaveFitter.prototype.makeUrl= function(newKeys,full){
+    newUrlVars = this.urlVars;
+    allKeys = {"lang":[this.lang,this.defaults.lang]
+    }
+    for (key in allKeys){
+        if (this.debug){console.log(key,allKeys[key]);}
+        if ((allKeys[key][0]!=allKeys[key][1])){
+            newUrlVars[key]=allKeys[key][0]
+        }else{
+            delete newUrlVars[(key)]
+        }
+    }
+    if(this.debug){console.log('new urlvars',newUrlVars);}
+    for (key in newKeys){
+        if (!newKeys[key]){
+            delete newUrlVars[key];
+        }else{
+            newUrlVars[key]=newKeys[key];
+        }
+    }
+    newUrl = this.url+'?';
+    for (key in newUrlVars){
+        newUrl=newUrl + key+'='+newUrlVars[key]+'&';
+    }
+    newUrl = newUrl.slice(0,newUrl.length-1);
+    return newUrl;
+}
+WaveFitter.prototype.loadLangDefault = function(){
+    var _wf=this;
+    var reload = (_wf.lang) ? true:false;
+    _wf.fileInLangDefault="lang/lang_en.json";
+    d3.json(_wf.fileInLangDefault, function(error, dataIn) {
+        if (error){
+            console.log(error);
+            alert("Fatal error loading input file: '"+_wf.fileInLangDefault+"'. Sorry!")
+        }
+        if(_wf.debug){console.log('loaded:',_wf.fileInLangDefault);}
+        for (ld in dataIn){
+            if ((ld!="metadata")&(typeof dataIn[ld]!="string")){
+                dataIn[ld]=dataIn[ld].text;
+            }
+        }
+        _wf.langdictDefault=dataIn;
+        _wf.loaded++;
+        if (_wf.loaded==_wf.toLoad){
+            _wf.whenLoaded();
+        }
+    });
+}
+WaveFitter.prototype.loadLang = function(lang,reload=false){
+    var _wf=this;
+    if (this.debug){console.log('new language:',lang,'; stored language',_wf.lang)}
+    _wf.lang=lang;
+    _wf.langshort = (_wf.lang.indexOf('-') > 0 ? _wf.lang.substring(0,_wf.lang.indexOf('-')) : _wf.lang.substring(0,2));
+    _wf.fileInLang="lang/lang_"+lang+".json";
+    d3.json(_wf.fileInLang, function(error, dataIn) {
+        if (error){
+            if (_wf.lang==_wf.defaults.lang){
+                console.log(error);
+                alert("Fatal error loading input file: '"+_wf.fileInLang+"'. Sorry!")
+            }else if (_wf.langshort!=_wf.lang){
+                if(_wf.debug){console.log('Error loading language '+_wf.lang+'. Displaying '+_wf.langshort+' instead');}
+                if (_wf.urlVars.lang){
+                    console.log('Error loading language '+_wf.lang+'. Displaying '+_wf.langshort+' instead');
+                    // _wf.updateUrl();
+                    // window.location.replace({},null,_wf.makeUrl({'lang':_wf.defaults.lang}));
+                }
+                // window.location.replace(_wf.makeUrl({'lang':_wf.langshort}));
+            }else{
+                if(_wf.debug){console.log('Error loading language '+_wf.lang+'. Reverting to '+_wf.defaults.lang+' as default');}
+                if (_wf.urlVars.lang){
+                    alert('Error loading language '+_wf.lang+'. Reverting to '+_wf.defaults.lang+' as default');
+                }
+                // window.location.replace(_wf.makeUrl({'lang':_wf.defaults.lang}));
+            }
+        }
+        if(_wf.debug){console.log('loaded:',_wf.fileInLang);}
+        for (ld in dataIn){
+            if ((ld!="metadata")&(typeof dataIn[ld]!="string")){
+                dataIn[ld]=dataIn[ld].text;
+            }
+        }
+        _wf.langdict=dataIn;
+        if (reload){
+            if (_wf.debug){console.log('reloaded language',_wf.lang);}
+            // window.location.replace(_wf.makeUrl({'lang':_wf.lang}));
+            _wf.setLang();
+        }else{
+            if (_wf.debug){console.log('loaded language',_wf.lang);}
+            _wf.loaded++;
+            // _wf.setLang();
+            if (_wf.loaded>=_wf.toLoad){
+                _wf.whenLoaded();
+            }
+        }
+    });
+}
+WaveFitter.prototype.setLang = function(){
+    var _wf=this;
+    d3.selectAll('.translate').each(function(){
+        let tlCode=this.getAttribute('data-content');
+        let tlTxt=_wf.getTl(tlCode);
+        this.innerHTML=tlTxt;
+        // console.log(this,tlCode,tlTxt);
+    })    
+}
+WaveFitter.prototype.getTl = function(code){
+    var _wf=this;
+    var txtOut="";
+    txtOut= (_wf.langdict[code]) ? _wf.langdict[code] : (_wf.langdictDefault[code]) ? _wf.langdictDefault[code] : txtOut;
+    return txtOut;
+}
+WaveFitter.prototype.whenLoaded = function(){
+    if (_wf.debug){console.log('loaded');}
+    this.setLang();
+    this.initGraph();
+}
 WaveFitter.prototype.initData = function(){
     this.data={dataH:new WaveData(dataH),simNR:new ScaleableWaveData(simNR)};
     // this.data.dataH.shiftt(-0.423);
@@ -153,7 +301,7 @@ WaveFitter.prototype.setScales = function(){
     
     this.scales.svgWidth=Math.floor(parseFloat(d3.select('body').style('width')));
     this.scales.svgHeight=Math.floor(this.scales.svgWidth/2);
-    d3.select('#about').append('p').html(window.outerWidth+' x '+window.outerHeight+'=> '+this.scales.svgWidth+' x '+this.scales.svgHeight);
+    // d3.select('#about').append('p').html(window.outerWidth+' x '+window.outerHeight+'=> '+this.scales.svgWidth+' x '+this.scales.svgHeight);
     this.scales.svgMargin={'left':80,'right':10,'top':10,'bottom':80}
     this.scales.graphWidth=this.scales.svgWidth-this.scales.svgMargin.left-this.scales.svgMargin.right;
     this.scales.graphHeight=this.scales.svgHeight-this.scales.svgMargin.top-this.scales.svgMargin.bottom;
@@ -183,6 +331,16 @@ WaveFitter.prototype.initGraph = function(){
     // d3.select('#about').style('width',this.scales.svgWidth);
     d3.select('#about-button').on('click',function(){showAbout();});
     d3.select('#about-close').on('click',function(){hideAbout();});
+    d3.select('#lang-button').on('click',function(){showLang();});
+    d3.select('#lang-close').on('click',function(){hideLang();});
+    var langR=parseFloat(d3.select('body').style('width')) - (document.getElementById('lang-button').offsetLeft + document.getElementById('lang-button').offsetWidth);
+    document.getElementById('lang').style.right=langR;
+    d3.selectAll('.lang-item').on('click',function(d,i){
+        console.log(this,this.getAttribute('data-lang'));
+        _wf.loadLang(this.getAttribute('data-lang'));
+        window.location.replace(_wf.makeUrl({'lang':_wf.lang}));
+        hideLang();
+    })
     
     var hid=d3.select('#'+this.holders.graph);
     hid.selectAll('*').remove();
@@ -208,11 +366,13 @@ WaveFitter.prototype.initGraph = function(){
             (_wf.scales.graphHeight + _wf.scales.svgMargin.top) + ")");
     _wf.svg.select(".x-axis.axis").call(_wf.scales.xAxis)
     _wf.svg.select(".x-axis.axis").append('text')
+        .attr("class", "x-axis axis-label translate")
+        .attr('data-content','text.axis.time')
         .attr("x", _wf.scales.graphWidth/2)
         .attr("y", (_wf.scales.svgMargin.bottom/2)+"px")
         .style("font-size",(_wf.scales.svgMargin.bottom/4)+"px")
         .attr("text-anchor","middle")
-        .text('Time (s)')
+        .text(_wf.getTl('text.axis.time'))
         
     // make y-axis
     _wf.svg.append("g")
@@ -223,14 +383,15 @@ WaveFitter.prototype.initGraph = function(){
     
     _wf.svg.select(".y-axis.axis").call(_wf.scales.yAxis)
     _wf.svg.select(".y-axis.axis").append("text")
-        .attr("class", "y-axis axis-label")
+        .attr("class", "y-axis axis-label translate")
+        .attr('data-content','text.axis.strain')
         .attr("transform", "rotate(-90)")
         .attr("y", 6)
         .attr("x",-_wf.scales.graphHeight/2)
         .attr("dy", (-_wf.scales.svgMargin.left/2)+"px")
         .style("font-size",(_wf.scales.svgMargin.left/4)+"px")
         .attr("text-anchor","middle")
-        .text('Strain x 10^21');
+        .text(_wf.getTl('text.axis.strain'));
     
     _wf.svg.append("g")
         .attr("id","data-g")
@@ -266,6 +427,7 @@ WaveFitter.prototype.drawData = function(){
         .attr('fill','none')
 }
 WaveFitter.prototype.addLegend = function(){
+    var _wf=this;
     var legg=this.svg.append('g')
         .attr('class','legend')
         .attr("transform", "translate("+(_wf.scales.svgMargin.left+_wf.scales.svgWidth*0.05)+"," +
@@ -277,10 +439,11 @@ WaveFitter.prototype.addLegend = function(){
         .attr('x2',_wf.scales.svgWidth*0.05)
         .attr('y2',0)
     legg.append('text')
-        .attr('class','leg-text data')
+        .attr('class','leg-text data translate')
+        .attr('data-content','text.legend.data')
         .attr('x',_wf.scales.svgWidth*0.07)
         .attr('y',0)
-        .text('Data')
+        .text(_wf.getTl('text.legend.data'))
     
     legg.append('line')
         .attr('class','line sim')
@@ -289,10 +452,11 @@ WaveFitter.prototype.addLegend = function(){
         .attr('x2',_wf.scales.svgWidth*0.05)
         .attr('y2',30)
     legg.append('text')
-        .attr('class','leg-text sim')
+        .attr('class','leg-text sim translate')
+        .attr('data-content','text.legend.simulation')
         .attr('x',_wf.scales.svgWidth*0.07)
         .attr('y',30)
-        .text('Simulation')
+        .text(_wf.getTl('text.legend.simulation'))
     
 }
 WaveFitter.prototype.updatePlot = function(dur=0){
@@ -318,7 +482,7 @@ WaveFitter.prototype.addSliders = function(){
     massdiv.append('div')
         .attr('class','param-title')
         .attr('id','mass-title')
-        .append('h2').html('<span class="label">Total Mass<br>(M<sub>☉</sub>)</span><span class="value"></span>')
+        .append('h2').html('<span class="label translate" data-content="data.totalmass">Total Mass<br>(M<sub>☉</sub>)</span><span class="value"></span>')
     massdiv.append('div')
         .attr('class','param-slider-outer')
     .append('div')
@@ -354,7 +518,7 @@ WaveFitter.prototype.addSliders = function(){
     distdiv.append('div')
         .attr('class','param-title')
         .attr('id','dist-title')
-        .append('h2').html('<span class="label">Distance<br>(Mpc)</span><span class="value"></span>')
+        .append('h2').html('<span class="label translate" data-content="data.distance">Distance<br>(Mpc)</span><span class="value"></span>')
     distdiv.append('div')
         .attr('class','param-slider-outer')
     .append('div')
@@ -399,4 +563,20 @@ function hideAbout(){
         .transition()
         .duration(500)
         .style('height',0)
+}
+function showLang(){
+    console.log('showing Lang');
+    d3.select('#lang')
+        .classed('on',true)
+        .transition()
+        .duration(500)
+        .style('max-height','25%')
+}
+function hideLang(){
+    console.log('hiding Lang');
+    d3.select('#lang')
+        .classed('on',false)
+        .transition()
+        .duration(500)
+        .style('max-height',0)
 }

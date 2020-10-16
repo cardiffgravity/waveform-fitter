@@ -1,0 +1,20 @@
+{
+ "text.title":"Gosodwr Ffurf y Don",
+ "text.close":"Diwedd",
+ "text.about.heading":"Amdanom ni",
+ "text.about.intro":"Mae’r ap gwe hwn yn eich galluogi i gyfateb efelychiad o ddata ton ddisgyrchol i ddata go iawn sy’n deillio o’r ddau dwll du yn uno.",
+ "text.about.params":"Defnyddiwch y llithryddion i addasu paramedrau sylfaenol yr efelychiad i gyfateb y data. Y paramedrau yw’r canlynol:",
+ "text.about.param.mass":"Cyfanswm màs y ddau dwll du, a fesurwyd mewn M☉ (Màs solar; màs yr Haul)",
+ "text.about.param.dist":"Pellter y ffynhonnell o’r Ddaear mewn Mpc (Megaparsec; 3.26 miliwn o flynyddoedd golau)",
+ "text.about.data":"Mae data ar gyfer GW150914 (o’r synhwyrydd LIGO-Hanford). Efelychiad yn rhagdybio màs cyfartal.",
+ "text.about.credit":"Ysgrifennwyd a chynhaliwyd gan Chris North (Prifysgol Caerdydd) ar gyfer Cydweithrediad LIGO-Virgo. Cydnabyddiaeth yr efelychiad: Mark Hannam (Prifysgol Caerdydd). <a href='https://github.com/cardiffgravity/waveform-fitter'>Côd gwreiddiol</a>",
+ "text.about.button":"Ynghylch",
+ "text.language.button":"Newid iaith",
+  "text.language.heading":"Newid iaith",
+ "data.totalmass":"Cyfanswm Màs<br>(M<sub>☉</sub>)",
+ "data.distance":"Pellter<br>(Mpc)",
+ "text.legend.data":"Data",
+ "text.legend.simulation":"Efelychu",
+ "text.axis.time":"Amser (e)",
+ "text.axis.strain":"Straen x10^21"
+}
