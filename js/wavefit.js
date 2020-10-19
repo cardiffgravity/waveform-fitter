@@ -92,7 +92,7 @@ class ScaleableWaveData extends WaveData{
         var dout=[];
         for (var i=0;i<tout.length;i++){
             let tScale=(tout[i]-this.t0)*this.M0/m + this.t0;
-            let hout=this.getH(tScale)*(this.D0/d);
+            let hout=this.getH(tScale)*(m/this.M0)*(this.D0/d);
             if (i%100==0){
                 // console.log(tout[i],this.t0,tout[i]-this.t0,m,this.M0,tScale,hout);
             }
